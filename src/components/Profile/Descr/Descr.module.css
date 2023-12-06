@@ -1,0 +1,32 @@
+  .ava {
+    margin-top: 20px;
+    max-width: 174px;
+    max-height: 164px;
+  }
+
+  .descr {
+    display: flex;
+  }
+
+  .descr .info {
+    display: flex;
+    margin-top: 20px;
+    margin-left: 45px;
+  }
+
+  .descr .info .person_name {
+    margin-bottom: 37px;
+    color: #47525E;
+    font-size: 35px;
+  }
+
+  .descr .info .person_descr {
+    color: #47525E;
+    font-size: 26px;
+    line-height: 33px;
+  }
+
+  .social span {
+    font-size: 20px;
+    font-weight: bold;
+  }

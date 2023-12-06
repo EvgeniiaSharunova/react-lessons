@@ -1,0 +1,10 @@
+.pugeNumber span {
+    cursor: pointer;
+    margin: 0 5px 0 5px;
+}
+
+.selectedPage {
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+}

@@ -1,0 +1,26 @@
+.dialogsItems {
+    padding: 10px;
+}
+
+.messages {
+    padding: 10px;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+}
+.item a {
+text-decoration: none;
+color: black;
+margin-right: 10px;
+}
+
+.item a.active {
+    color: gold;
+}
+
+.avatar {
+    max-width: 70px;
+    max-height: 70px;
+}

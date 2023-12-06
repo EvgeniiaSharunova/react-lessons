@@ -1,0 +1,17 @@
+.header {
+  grid-area: h;
+  background-color: #13ce66;
+}
+
+.header img {
+  max-height: 64px;
+  margin: 5px 0 5px 16px;
+}
+
+.loginBlock {
+  float: right;
+}
+
+.loginBlock a {
+  color: white;
+}

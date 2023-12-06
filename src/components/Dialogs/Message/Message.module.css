@@ -1,0 +1,13 @@
+.avatar {
+    max-width: 70px;
+    max-height: 70px;
+}
+
+.message {
+    padding: 10px;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 70px 1fr;
+    gap: 5px;
+    align-items: center;
+}

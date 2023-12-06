@@ -1,0 +1,11 @@
+.item {
+  display: flex;
+  align-items: center;
+  color: green;
+}
+
+.avatar {
+  border-radius: 100%;
+  width: 58px;
+  height: 58px;
+}

@@ -1,0 +1,26 @@
+.navbar {
+    grid-area: n;
+    background-color: #13ce66;
+    min-height: 904px;
+    padding: 20px;
+  }
+  
+.item a {
+    display:block;
+    color: #FFFFFF;
+    font-size: 34px;
+    line-height: 44px;
+    max-width: 227px;
+    text-align: left;
+    text-decoration: none;
+    margin:13px 0 0 19px;
+  }
+
+.item a.activeLink {
+    color: gold;
+  }
+
+.friends a {
+  font-size: 45px;
+  margin-top: 80px;
+}

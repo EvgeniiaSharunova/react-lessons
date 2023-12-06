@@ -1,0 +1,13 @@
+.avatar {
+    width: 100px;
+    height: 100px;
+}
+
+.userInfo {
+    display: flex;
+    margin-top: 15px;
+}
+
+.descrUser {
+    margin-left: 10px;
+}

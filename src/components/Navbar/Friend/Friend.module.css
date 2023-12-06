@@ -1,0 +1,20 @@
+.list a.activeLink {
+    color: gold;
+}
+
+.list {
+    display: flex;
+    margin-top: 50px;
+}
+
+.list div a {
+    display: inline;
+    font-size: 20px;
+    line-height: 20px;
+}
+
+.avatar {
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+}
