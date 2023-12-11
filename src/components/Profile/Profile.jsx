@@ -7,7 +7,11 @@ const Profile = (props) => {
     return (
         <div>
             <Bg />
-            <Descr profile={props} status={props.status} updateUserStatus={props.updateUserStatus} />
+            <Descr savePhoto={props.savePhoto}
+                isOwner={props.isOwner}
+                profile={props}
+                status={props.status}
+                updateUserStatus={props.updateUserStatus} />
             <MyPostsContainer />
         </div>
     );

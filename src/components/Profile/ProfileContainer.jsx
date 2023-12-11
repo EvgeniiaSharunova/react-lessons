@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { compose } from 'redux';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
-import { setUserProfile, userProfile, getUserStatus, updateUserStatus } from '../../redux/messageReducer';
+import { setUserProfile, userProfile, getUserStatus, updateUserStatus, savePhoto } from '../../redux/messageReducer';
 import Profile from './Profile';
 
 
@@ -16,7 +16,7 @@ export function withRouter(Children) {
 
 class ProfileContainer extends React.Component {
 
-    componentDidMount() {
+    refreshProfile() {
         let userId = this.props.match.params.userId;
         if (!userId) {
             userId = this.props.authorizedUserId;
@@ -29,13 +29,25 @@ class ProfileContainer extends React.Component {
         this.props.getUserStatus(userId);
     }
 
+    componentDidMount() {
+        this.refreshProfile();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.match.params.userId !== prevProps.match.params.userId) {
+            this.refreshProfile();
+        }
+
+    }
     render() {
         return (
             <div>
                 <Profile {...this.props}
+                    isOwner={!this.props.match.params.userId}
                     profile={this.props.profile}
                     status={this.props.status}
-                    updateUserStatus={this.props.updateUserStatus} />
+                    updateUserStatus={this.props.updateUserStatus}
+                    savePhoto={this.props.savePhoto} />
             </div>
         );
     }
@@ -55,7 +67,7 @@ let WithUrlDataContainerComponent = withRouter(AuthRedirectComponent);
 export default connect(mapStateToProps, { setUserProfile, userProfile })(WithUrlDataContainerComponent); */
 
 export default compose(
-    connect(mapStateToProps, { setUserProfile, userProfile, getUserStatus, updateUserStatus }),
+    connect(mapStateToProps, { setUserProfile, userProfile, getUserStatus, updateUserStatus, savePhoto }),
     withRouter,
     withAuthRedirect
 )(ProfileContainer);

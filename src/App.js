@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Routes, BrowserRouter, Route } from 'react-router-dom';
+import { Routes, BrowserRouter, Route, HashRouter } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import News from './components/News/News';
@@ -32,26 +32,26 @@ class App extends React.Component {
             return <Preloader />
         }
         return (
-            <BrowserRouter>
-                <div className='app-wrapper'>
-                    <HeaderContainer />
-                    <Navbar state={this.props.appState} />
-                    <div className='app-wrapper-content'>
-                        <Suspense fallback={<Preloader />}>
-                            <Routes>
-                                <Route path="/profile/:userId?" element={<ProfileContainer />} />
-                                <Route path="/dialogs*" element={<DialogsContainer />} />
-                                <Route path="/news" Component={News} />
-                                <Route path="/music" Component={Music} />
-                                <Route path="/users*" element={<UsersContainer />} />
-                                <Route path="/settings" Component={Settings} />
-                                <Route path="/friends*" element={<Friends />} />
-                                <Route path="/login*" element={<Login />} />
-                            </Routes>
-                        </Suspense>
-                    </div>
+            //<BrowserRouter basename={process.env.PUBLIC_URL}>
+            <div className='app-wrapper'>
+                <HeaderContainer />
+                <Navbar state={this.props.appState} />
+                <div className='app-wrapper-content'>
+                    <Suspense fallback={<Preloader />}>
+                        <Routes>
+                            <Route path="/profile/:userId?" element={<ProfileContainer />} />
+                            <Route path="/dialogs*" element={<DialogsContainer />} />
+                            <Route path="/news" Component={News} />
+                            <Route path="/music" Component={Music} />
+                            <Route path="/users*" element={<UsersContainer />} />
+                            <Route path="/settings" Component={Settings} />
+                            <Route path="/friends*" element={<Friends />} />
+                            <Route path="/login*" element={<Login />} />
+                        </Routes>
+                    </Suspense>
                 </div>
-            </BrowserRouter>
+            </div>
+            //</BrowserRouter>
         );
     }
 }
@@ -64,14 +64,18 @@ let AppContainer = connect(mapStateToProps, { inisializeApp })(App);
 
 let MainApp = (props) => {
     return (
-        <React.StrictMode>
-            <Provider store={store}>
-                <AppContainer />
-            </Provider>
-        </React.StrictMode>
+        <HashRouter /* basename='process.env.PUBLIC_URL + "/"' */>
+            <React.StrictMode>
+                <Provider store={store}>
+                    <AppContainer />
+                </Provider>
+            </React.StrictMode>
+        </HashRouter>
     )
 }
 
 export default MainApp;
+
+//"homepage": "https://evgeniiasharunova.github.io/react-lessons", вернуть в package.json, если нужно будет делать deploy в gh-pages
 
 /* HookyQR.beautify *///настройки в в параметрах открыть файл json и исправить обратно "[javascript]": {"editor.defaultFormatter": "dbaeumer.vscode-eslint"} на HookyQR.beautify
