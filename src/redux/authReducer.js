@@ -1,15 +1,17 @@
 import { stopSubmit } from "redux-form";
-import { authAPI } from "../api/api";
+import { authAPI, securityAPI } from "../api/api";
 
 const SET_USER_DATA = 'samurai-network/auth/SET_USER_DATA';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
+const GET_CAPTCHA_URL_SUCCESS = 'samurai-network/auth/GET_CAPTCHA_URL_SUCCESS'
 
 let initialState = {
     id: null,
     email: null,
     login: null,
     isAuth: false,
-    isFetching: false
+    isFetching: false,
+    captchaUrl: null
 };
 
 const authReducer = (state = initialState, action) => {
@@ -21,6 +23,8 @@ const authReducer = (state = initialState, action) => {
             }
         case TOGGLE_IS_FETCHING:
             return { ...state, isFetching: action.isFetching };
+        case GET_CAPTCHA_URL_SUCCESS:
+            return { ...state, captchaUrl: action.captchaUrl };
         default:
             return state;
     }
@@ -36,11 +40,14 @@ export const initUser = () => async (dispatch) => {
     }
 }
 
-export const login = (email, password, rememberMe) => async (dispatch) => {
-    let response = await authAPI.login(email, password, rememberMe);
+export const login = (email, password, rememberMe, captcha) => async (dispatch) => {
+    let response = await authAPI.login(email, password, rememberMe, captcha);
     if (response.resultCode === 0) {
         dispatch(initUser())
     } else {
+        if (response.resultCode === 10) {
+            dispatch(getCaptchaUrl());
+        }
         let message = response.messages.length > 0 ? response.messages[0] : 'Some error'
         dispatch(stopSubmit('Login', { _error: message }));
     }
@@ -53,7 +60,15 @@ export const logout = () => async (dispatch) => {
     }
 }
 
+export const getCaptchaUrl = () => async (dispatch) => {
+    const response = await securityAPI.getCaptchaUrl();
+    const captchaUrl = response.data.url;
+    dispatch(getCaptchaUrlSuccess(captchaUrl));
+
+}
+
 export const setAuthUserData = (id, email, login, isAuth) => ({ type: SET_USER_DATA, payload: { id, email, login, isAuth } });
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
+export const getCaptchaUrlSuccess = (captchaUrl) => ({ type: GET_CAPTCHA_URL_SUCCESS, captchaUrl });
 
 export default authReducer;

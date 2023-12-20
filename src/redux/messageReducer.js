@@ -1,3 +1,4 @@
+import { stopSubmit } from "redux-form";
 import { userAPI, profileAPI } from "../api/api.js";
 //import userAPI from "../api/api.js";
 //import profileAPI from "../api/api.js";
@@ -68,9 +69,13 @@ export const getUserStatus = (userId) => async (dispatch) => {
 }
 
 export const updateUserStatus = (status) => async (dispatch) => {
-    let response = await profileAPI.updateStatus(status);
-    if (response.data.resultCode === 0) {
-        dispatch(setStatus(status));
+    try {
+        let response = await profileAPI.updateStatus(status);
+        if (response.data.resultCode === 0) {
+            dispatch(setStatus(status));
+        }
+    } catch (error) {
+        alert('Error');
     }
 }
 
@@ -81,13 +86,33 @@ export const savePhoto = (file) => async (dispatch) => {
     }
 }
 
+const getErrorsFromMessages = (messages) => {
+    let errors = Object.keys(messages).reduce((acc, key) => {
+        let errorMessage = messages[key].split("->");
+        errorMessage = errorMessage[1]
+            .slice(0, errorMessage[1].length - 1)
+            .toLowerCase();
+        return { ...acc, [errorMessage]: messages[key] };
+    }, {});
+
+    return errors;
+};
+
+export const saveProfile = (profile) => async (dispatch, getState) => {
+    const userId = getState().auth.id;
+    const response = await profileAPI.saveProfile(profile);
+    if (response.data.resultCode === 0) {
+        dispatch(userProfile(userId));
+    } else {
+        dispatch(stopSubmit('edit-profile', { contacts: getErrorsFromMessages(response.data.messages) }));
+        return Promise.reject(response.data.messages);
+    }
+};
+
 export const addPostCreater = (newPostText) => ({ type: addPost, newPostText });
-/* export const updateNewPostTextCreater = (text) => ({ type: updateNewPostText, newText: text }); */
 export const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile });
 export const setStatus = (status) => ({ type: SET_STATUS, status });
 export const deletePost = (postId) => ({ type: DELETE_POST, postId });
 export const savePhotoSuccess = (photos) => ({ type: SAVE_PHOTO_SUCCESS, photos });
-
-
 
 export default messageReducer;

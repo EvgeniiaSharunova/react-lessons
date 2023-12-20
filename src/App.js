@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Routes, BrowserRouter, Route, HashRouter } from 'react-router-dom';
+import { Routes, BrowserRouter, Route, HashRouter, Navigate } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import News from './components/News/News';
@@ -24,7 +24,16 @@ const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileCo
 class App extends React.Component {
 
     componentDidMount() {
+        this.catchAllUnhandledErrors = (promisePejectionEvent) => {
+            alert('same error occered');
+            //console.error(promisePejectionEvent);
+        }
         this.props.inisializeApp();
+        window.addEventListener('unhandlerejection', this.catchAllUnhandledErrors);
+    };
+
+    componentWillUnmount() {
+        window.removeEventListener('unhandlerejection', this.catchAllUnhandledErrors);
     }
 
     render() {
@@ -39,6 +48,7 @@ class App extends React.Component {
                 <div className='app-wrapper-content'>
                     <Suspense fallback={<Preloader />}>
                         <Routes>
+                            <Route exact path="/" element={<Navigate to={"/profile"} />} />
                             <Route path="/profile/:userId?" element={<ProfileContainer />} />
                             <Route path="/dialogs*" element={<DialogsContainer />} />
                             <Route path="/news" Component={News} />
@@ -47,6 +57,7 @@ class App extends React.Component {
                             <Route path="/settings" Component={Settings} />
                             <Route path="/friends*" element={<Friends />} />
                             <Route path="/login*" element={<Login />} />
+                            <Route path="*" element={<div>404 NOT FOUND</div>} />
                         </Routes>
                     </Suspense>
                 </div>
@@ -64,13 +75,13 @@ let AppContainer = connect(mapStateToProps, { inisializeApp })(App);
 
 let MainApp = (props) => {
     return (
-        <HashRouter /* basename='process.env.PUBLIC_URL + "/"' */>
+        <BrowserRouter/*  basename='process.env.PUBLIC_URL + "/"' */>
             <React.StrictMode>
                 <Provider store={store}>
                     <AppContainer />
                 </Provider>
             </React.StrictMode>
-        </HashRouter>
+        </BrowserRouter>
     )
 }
 

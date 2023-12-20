@@ -8,6 +8,7 @@ const Profile = (props) => {
         <div>
             <Bg />
             <Descr savePhoto={props.savePhoto}
+                saveProfile={props.saveProfile}
                 isOwner={props.isOwner}
                 profile={props}
                 status={props.status}
